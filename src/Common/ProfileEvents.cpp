@@ -233,6 +233,13 @@
     M(S3WriteRequestsErrors, "Number of non-throttling errors in POST, DELETE, PUT and PATCH requests to S3 storage.") \
     M(S3WriteRequestsThrottling, "Number of 429 and 503 errors in POST, DELETE, PUT and PATCH requests to S3 storage.") \
     M(S3WriteRequestsRedirects, "Number of redirects in POST, DELETE, PUT and PATCH requests to S3 storage.") \
+    \
+    M(US3ReadMicroseconds, "Time of GET and HEAD requests to US3 storage.")\
+    M(US3ReadBytes, "Read bytes (incoming) in GET and HEAD requests to US3 storage.") \
+    \
+    M(US3WriteMicroseconds, "Time of POST, DELETE, PUT and PATCH requests to US3 storage.") \
+    M(US3WriteBytes, "Write bytes (outgoing) in POST, DELETE, PUT and PATCH requests to US3 storage.") \
+
 
 
 namespace ProfileEvents

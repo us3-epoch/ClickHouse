@@ -81,6 +81,8 @@ if (USE_AWS_S3)
     add_headers_and_sources(dbms Common/S3)
     add_headers_and_sources(dbms Disks/S3)
 endif()
+add_headers_and_sources(dbms Disks/US3)
+add_headers_and_sources(dbms IO/US3)
 
 list (APPEND clickhouse_common_io_sources ${CONFIG_BUILD})
 list (APPEND clickhouse_common_io_headers ${CONFIG_VERSION} ${CONFIG_COMMON})
