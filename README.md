@@ -1,32 +1,4 @@
-clickhouse是一个用于OLAP的开源列式数据库，Yandex开发。
-
-## 主要功能：
-
-* 真正的列式数据库。 没有任何内容与值一起存储。例如，支持常量长度值，以避免将它们的长度“ number”存储在值的旁边。
-* 线性可扩展性。 可以通过添加服务器来扩展集群。
-* 容错性。 系统是一个分片集群，其中每个分片都是一组副本。ClickHouse使用异步多主复制。数据写入任何可用的副本，然后分发给所有剩余的副本。Zookeeper用于协调进程，但不涉及查询处理和执行。
-* 能够存储和处理数PB的数据。
-* SQL支持。 Clickhouse支持类似SQL的扩展语言，包括数组和嵌套数据结构、近似函数和URI函数，以及连接外部键值存储的可用性。
-* 高性能。[13]
-* 使用向量计算。数据不仅由列存储，而且由向量处理（一部分列）。这种方法可以实现高CPU性能。
-* 支持采样和近似计算。
-* 可以进行并行和分布式查询处理（包括JOIN）。
-* 数据压缩。
-* HDD优化。 该系统可以处理不适合内存的数据。
-
-## 使用场景
-
-* 它可以处理少量包含大量字段的表。
-* 查询可以使用从数据库中提取的大量行，但只用一小部分字段。
-* 查询相对较少(通常每台服务器大约100个RPS)。
-* 对于简单的查询，允许大约50毫秒的延迟。
-* 列值相当小，通常由数字和短字符串组成（例如每个URL，60字节）。
-* 处理单个查询时需要高吞吐量（每台服务器每秒数十亿行）。
-* 查询结果主要是过滤或聚合的。
-* 数据更新使用简单的场景（通常只是批量处理，没有复杂的事务）。
-* ClickHouse的一个常见情况是服务器日志分析。在将常规数据上传到ClickHouse之后（建议将数据每次1000条以上批量插入），就可以通过即时查询分析事件或监视服务的指标，如错误率、响应时间等。
- 
-ClickHouse还可以用作内部分析师的内部数据仓库。ClickHouse可以存储来自不同系统的数据（比如Hadoop或某些日志），分析人员可以使用这些数据构建内部指示板，或者为了业务目的执行实时分析。
+clickhouse是一个用于OLAP的开源列式数据库，Yandex开发。具体介绍可参见[官网](https://clickhouse.tech/docs/zh/)
 
 ## us3存储支持
 
@@ -128,3 +100,124 @@ select * from system.storage_policies
 ## 性能差距
 
 相比使用本地存储，性能上会有一定的损耗，时延大约是本地的8~9倍左右。
+
+通过[官方ontime测试数据集](https://clickhouse.tech/docs/zh/getting-started/example-datasets/ontime/)进行单表测试，测试结果如下：
+
+*US3建表语句*
+```sql
+CREATE TABLE `ontime_us3` (
+  `Year` UInt16,
+  `Quarter` UInt8,
+  `Month` UInt8,
+  `DayofMonth` UInt8,
+  `DayOfWeek` UInt8,
+  `FlightDate` Date,
+  `UniqueCarrier` FixedString(7),
+  `AirlineID` Int32,
+  `Carrier` FixedString(2),
+  `TailNum` String,
+  `FlightNum` String,
+  `OriginAirportID` Int32,
+  `OriginAirportSeqID` Int32,
+  `OriginCityMarketID` Int32,
+  `Origin` FixedString(5),
+  `OriginCityName` String,
+  `OriginState` FixedString(2),
+  `OriginStateFips` String,
+  `OriginStateName` String,
+  `OriginWac` Int32,
+  `DestAirportID` Int32,
+  `DestAirportSeqID` Int32,
+  `DestCityMarketID` Int32,
+  `Dest` FixedString(5),
+  `DestCityName` String,
+  `DestState` FixedString(2),
+  `DestStateFips` String,
+  `DestStateName` String,
+  `DestWac` Int32,
+  `CRSDepTime` Int32,
+  `DepTime` Int32,
+  `DepDelay` Int32,
+  `DepDelayMinutes` Int32,
+  `DepDel15` Int32,
+  `DepartureDelayGroups` String,
+  `DepTimeBlk` String,
+  `TaxiOut` Int32,
+  `WheelsOff` Int32,
+  `WheelsOn` Int32,
+  `TaxiIn` Int32,
+  `CRSArrTime` Int32,
+  `ArrTime` Int32,
+  `ArrDelay` Int32,
+  `ArrDelayMinutes` Int32,
+  `ArrDel15` Int32,
+  `ArrivalDelayGroups` Int32,
+  `ArrTimeBlk` String,
+  `Cancelled` UInt8,
+  `CancellationCode` FixedString(1),
+  `Diverted` UInt8,
+  `CRSElapsedTime` Int32,
+  `ActualElapsedTime` Int32,
+  `AirTime` Int32,
+  `Flights` Int32,
+  `Distance` Int32,
+  `DistanceGroup` UInt8,
+  `CarrierDelay` Int32,
+  `WeatherDelay` Int32,
+  `NASDelay` Int32,
+  `SecurityDelay` Int32,
+  `LateAircraftDelay` Int32,
+  `FirstDepTime` String,
+  `TotalAddGTime` String,
+  `LongestAddGTime` String,
+  `DivAirportLandings` String,
+  `DivReachedDest` String,
+  `DivActualElapsedTime` String,
+  `DivArrDelay` String,
+  `DivDistance` String,
+  `Div1Airport` String,
+  `Div1AirportID` Int32,
+  `Div1AirportSeqID` Int32,
+  `Div1WheelsOn` String,
+  `Div1TotalGTime` String,
+  `Div1LongestGTime` String,
+  `Div1WheelsOff` String,
+  `Div1TailNum` String,
+  `Div2Airport` String,
+  `Div2AirportID` Int32,
+  `Div2AirportSeqID` Int32,
+  `Div2WheelsOn` String,
+  `Div2TotalGTime` String,
+  `Div2LongestGTime` String,
+  `Div2WheelsOff` String,
+  `Div2TailNum` String,
+  `Div3Airport` String,
+  `Div3AirportID` Int32,
+  `Div3AirportSeqID` Int32,
+  `Div3WheelsOn` String,
+  `Div3TotalGTime` String,
+  `Div3LongestGTime` String,
+  `Div3WheelsOff` String,
+  `Div3TailNum` String,
+  `Div4Airport` String,
+  `Div4AirportID` Int32,
+  `Div4AirportSeqID` Int32,
+  `Div4WheelsOn` String,
+  `Div4TotalGTime` String,
+  `Div4LongestGTime` String,
+  `Div4WheelsOff` String,
+  `Div4TailNum` String,
+  `Div5Airport` String,
+  `Div5AirportID` Int32,
+  `Div5AirportSeqID` Int32,
+  `Div5WheelsOn` String,
+  `Div5TotalGTime` String,
+  `Div5LongestGTime` String,
+  `Div5WheelsOff` String,
+  `Div5TailNum` String
+) ENGINE = MergeTree
+PARTITION BY Year
+ORDER BY (Carrier, FlightDate)
+SETTINGS index_granularity = 8192,
+storage_policy = 'us3';
+```
