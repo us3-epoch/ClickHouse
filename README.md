@@ -103,6 +103,10 @@ select * from system.storage_policies
 
 通过[官方ontime测试数据集](https://clickhouse.tech/docs/zh/getting-started/example-datasets/ontime/)进行单表测试，测试结果如下：
 
+![](docs/ch.png)
+
+其中本地测试按照官网步骤执行；US3测试建表语句如下，SQL操作同本地
+
 *US3建表语句*
 ```sql
 CREATE TABLE `ontime_us3` (
