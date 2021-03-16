@@ -13,7 +13,7 @@ git clone https://github.com/us3-epoch/ClickHouse
 * 切到指定分支
 
 ```
-git checkout us3_support
+git checkout us3_support_v20.8.7.15-lts
 ```
 
 * 下载依赖的子模块
