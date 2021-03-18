@@ -1,4 +1,11 @@
-clickhouse是一个用于OLAP的开源列式数据库，Yandex开发。具体介绍可参见[官网](https://clickhouse.tech/docs/zh/)
+clickhouse是一个用于OLAP的开源列式数据库，Yandex开发。具体介绍可参见[官网](https://clickhouse.tech/docs/zh/).
+
+本分支基于官方版本v20.8.7.15-lts开发。
+
+## 新增功能
+
+* disk类型可配置为us3对象存储
+  * 支持前缀挂载
 
 ## us3存储支持
 
